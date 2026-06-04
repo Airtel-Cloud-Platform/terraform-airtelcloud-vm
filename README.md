@@ -111,6 +111,24 @@ module "vm" {
   availability_zone = "S1"
 }
 ```
+## Notes
+
+### Security Group Attachment
+
+When attaching an existing Security Group, the `security_group_id` parameter expects the numeric Security Group ID and not the Security Group UUID.
+
+Example:
+
+```hcl
+security_group_id = tostring(module.security_group.security_group_id)
+```
+
+Do not use:
+
+```hcl
+security_group_id = module.security_group.security_group_uuid
+```
+
 ## Inputs
 
 | Name | Description | Type | Required | Default |
@@ -124,7 +142,7 @@ module "vm" {
 | availability_zone | Availability zone | string | Yes | - |
 | boot_from_volume | Whether VM should boot from volume | bool | No | true |
 | disk_size | Boot disk size in GB | number | No | 100 |
-| security_group_id | Security Group ID to attach to VM | string | No | null |
+| security_group_id | Numeric Security Group ID to attach to the VM. Do not use Security Group UUID | string | No | null |
 | keypair_id | Keypair ID for SSH access | string | No | null |
 | user_data | Cloud-init or bootstrap script | string | No | null |
 | volume_type_id | Volume type ID | string | No | null |
